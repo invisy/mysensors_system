@@ -39,7 +39,15 @@ namespace MySensors.Web.Controllers
         public async Task<IActionResult> Add(SensorDTO sensor)
         {
             sensor.UserId = User.GetUserId();
-            await _sensorsService.AddSensor(sensor);
+
+            try
+            {
+                await _sensorsService.AddSensor(sensor);
+            }
+            catch(ArgumentOutOfRangeException)
+            {
+                return BadRequest("One of arguments is not valid!");
+            }
 
             return Ok();
         }
@@ -56,16 +64,17 @@ namespace MySensors.Web.Controllers
                     var sensorToken = new SensorToken() {Token = await _sensorsService.GetTokenBySensorId(id)};
                     return sensorToken;
                 }
+                else
+                    return NotFound();
             }
             catch (EntityNotFoundException)
             {
+                return NotFound();
             }
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-
-            return NotFound();
         }
         
         // DELETE
@@ -80,16 +89,16 @@ namespace MySensors.Web.Controllers
                     await _sensorsService.RemoveSensor(id);
                     return Ok();
                 }
+                else
+                    return NotFound();
             }
             catch (EntityNotFoundException)
             {
+                return NotFound();
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-
-            return NotFound();
         }
     }
 }

@@ -47,6 +47,8 @@ namespace MySensors.ApplicationCore.Services
                 }
                 await _uow.SaveChanges();
             }
+            else
+                throw new ArgumentException("Token is invalid");
         }
 
         public async Task<IEnumerable<SensorParameterValueWithDateDTO>> GetValuesByParamId(int id, int minutes)

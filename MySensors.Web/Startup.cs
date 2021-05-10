@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -5,6 +7,9 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using MySensors.ApplicationCore.Constants;
+using MySensors.Infrastructure;
 
 namespace MySensors.Web
 {
@@ -20,6 +25,35 @@ namespace MySensors.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.BindInfrastructureLayer(Configuration.GetConnectionString("MySensorsDB"));
+            
+            services.AddAuthentication(x =>
+                {
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = AuthorizationConstants.ISSUER,
+                        ValidateAudience = true,
+                        ValidAudience = AuthorizationConstants.AUDIENCE,
+                        ValidateLifetime = true
+                        //IssuerSigningKey = AuthorizationConstants.GetSymmetricSecurityKey(),
+                        //ValidateIssuerSigningKey = true,
+                    };
+                });
+
+            services.AddAuthorization(options =>
+            {
+                options.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser()
+                    .Build();
+            });
+            
             services.AddControllersWithViews();
 
             // In production, the React files will be served from this directory
@@ -45,6 +79,9 @@ namespace MySensors.Web
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+            
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

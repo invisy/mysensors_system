@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySensors.Web", "MySensors.Web\MySensors.Web.csproj", "{85455D24-6F57-48C8-A8F4-54E0000A9313}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySensors.ApplicationCore", "MySensors.ApplicationCore\MySensors.ApplicationCore.csproj", "{9858979A-9ACA-4559-87BC-0241E4D027ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySensors.Infrastructure", "MySensors.Infrastructure\MySensors.Infrastructure.csproj", "{0F4BAF29-5952-462F-9344-6BA54AD478DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{85455D24-6F57-48C8-A8F4-54E0000A9313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85455D24-6F57-48C8-A8F4-54E0000A9313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85455D24-6F57-48C8-A8F4-54E0000A9313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85455D24-6F57-48C8-A8F4-54E0000A9313}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9858979A-9ACA-4559-87BC-0241E4D027ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9858979A-9ACA-4559-87BC-0241E4D027ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9858979A-9ACA-4559-87BC-0241E4D027ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9858979A-9ACA-4559-87BC-0241E4D027ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F4BAF29-5952-462F-9344-6BA54AD478DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F4BAF29-5952-462F-9344-6BA54AD478DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F4BAF29-5952-462F-9344-6BA54AD478DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F4BAF29-5952-462F-9344-6BA54AD478DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

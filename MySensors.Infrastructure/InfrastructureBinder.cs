@@ -11,10 +11,16 @@ namespace MySensors.Infrastructure
     {
         public static IServiceCollection BindInfrastructureLayer(this IServiceCollection services, string connectionString)
         {
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddDefaultUI()
+                .AddEntityFrameworkStores<AppIdentityDbContext>()
+                .AddDefaultTokenProviders();
+            
             services.AddDbContext<MySensorsAppContext>(options =>
-                options.UseSqlServer(connectionString));
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<MySensorsAppContext>();
+                options.UseInMemoryDatabase(databaseName: "Test"));
+
+            services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseInMemoryDatabase(databaseName: "TestIdentity"));
 
             services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 

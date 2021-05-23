@@ -13,6 +13,7 @@ import Container from '@material-ui/core/Container';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import AuthService from '../services/auth.service'
 
 const useStyles = theme => ({
   paper: {
@@ -55,8 +56,8 @@ class SignIn extends Component {
   
   handleSubmit(event)
   {
-    document.cookie = 'token=testcookie;max-age=604800';
-    alert("Login: " + this.state.email + ";Password: " + this.state.password + ";Remember: " + this.state.remember);
+    //alert("Login: " + this.state.email + ";Password: " + this.state.password + ";Remember: " + this.state.remember);
+    this.loginUser(this.state.email, this.state.password)
     event.preventDefault();
   }
   
@@ -132,14 +133,7 @@ class SignIn extends Component {
   }
 
   async loginUser(email, password) {
-    return fetch('sign-in', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(email, password)
-    })
-        .then(data => data.json())
+    const json = await AuthService.login(email, password);
   }
 }
 

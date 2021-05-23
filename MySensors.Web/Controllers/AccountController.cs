@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MySensors.ApplicationCore.Interfaces;
 using MySensors.Infrastructure.Identity;
+using MySensors.Web.ViewModels;
 
 namespace MySensors.Web.Controllers
 {
-    [Route("[controller]")]
+    [ApiController]
+    [Route("api/[controller]")]
     public class AccountController : Controller
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -23,20 +25,22 @@ namespace MySensors.Web.Controllers
             _tokenClaimsService = tokenClaimsService;
         }
 
-        [HttpPost("auth")]
-        public async Task<IActionResult> Auth(string username, string password, bool isPersistent)
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginResponse>> Login(LoginRequest credentials)
         {
-            if (username == null || password == null)
-                return BadRequest(new { errorText = "Invalid username or password." });
+            if (credentials.Login == null ||  credentials.Password == null)
+                return BadRequest(new { error = "Invalid input" });
             
-            var result = await _signInManager.PasswordSignInAsync(username, password, isPersistent, false);
+            var result = await _signInManager.PasswordSignInAsync(credentials.Login, credentials.Password, false, false);
 
-            string token = String.Empty;
+            LoginResponse response = new LoginResponse();
             
             if (result.Succeeded)
-                token = await _tokenClaimsService.GetTokenAsync(username);
+                response.Token = await _tokenClaimsService.GetTokenAsync(credentials.Login);
+            else
+                return BadRequest(new { error = "Invalid login or password" });
 
-            return new EmptyResult();
+            return Ok(response);
         }
     }
 }

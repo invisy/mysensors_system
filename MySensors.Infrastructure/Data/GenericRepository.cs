@@ -42,7 +42,8 @@ namespace MySensors.Infrastructure.Data
 
         public async Task UpdateAsync(TEntity entity)
         {
-            throw new System.NotImplementedException();
+            TEntity find = await this.GetByIdAsync(entity.Id);
+            _dbContext.Entry(find).CurrentValues.SetValues(entity);
         }
 
         public void Delete(TEntity entity)

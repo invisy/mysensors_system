@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import PropTypes from "prop-types";
 import {withStyles} from '@material-ui/core/styles';
+import Alert from "@material-ui/lab/Alert";
+import AuthService from "../services/auth.service";
 
 const useStyles = theme => ({
   paper: {
@@ -39,7 +41,7 @@ class SignUp extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { firstName: "", lastName: "", email: "", password: "", marketingAgreement: true, loading: true };
+    this.state = { firstName: "", lastName: "", email: "", password: "", marketingAgreement: true, error: "", loading: true };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -53,10 +55,10 @@ class SignUp extends Component {
     });
   }
   
-  handleSubmit(event)
+  async handleSubmit(event)
   {
-    document.cookie = 'token2=testcookie2;max-age=604800';
     event.preventDefault();
+    await this.registerUser(this.state.firstName, this.state.lastName, this.state.email, this.state.password)
   }
   
   render() {
@@ -72,6 +74,7 @@ class SignUp extends Component {
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
+            {this.state.error && <Alert xs variant="outlined" severity="error">{this.state.error}</Alert>}
             <form className={classes.form} noValidate onSubmit={this.handleSubmit}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
@@ -155,6 +158,19 @@ class SignUp extends Component {
           </div>
         </Container>
     );
+  }
+
+  async registerUser(firstname, lastname, email, password) {
+    try {
+      await AuthService.register(firstname, lastname, email, password);
+    }
+    catch(e)
+    {
+      this.setState({
+        error: e
+      });
+    }
+
   }
 }
 

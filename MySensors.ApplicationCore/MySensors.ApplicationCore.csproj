@@ -5,11 +5,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Entities" />
+      <PackageReference Include="Ardalis.Specification" Version="5.1.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Ardalis.Specification" Version="5.1.0" />
+      <Folder Include="Specifications" />
     </ItemGroup>
 
 </Project>

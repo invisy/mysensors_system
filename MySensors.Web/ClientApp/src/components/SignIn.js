@@ -10,6 +10,7 @@ import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import Alert from '@material-ui/lab/Alert';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
@@ -40,7 +41,7 @@ class SignIn extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { email: "", password: "", remember: true, loading: true };
+    this.state = { email: "", password: "", remember: true, error: "", loading: true };
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -54,11 +55,10 @@ class SignIn extends Component {
     });
   }
   
-  handleSubmit(event)
+  async handleSubmit(event)
   {
-    //alert("Login: " + this.state.email + ";Password: " + this.state.password + ";Remember: " + this.state.remember);
-    this.loginUser(this.state.email, this.state.password)
     event.preventDefault();
+    await this.loginUser(this.state.email, this.state.password);
   }
   
   render () {
@@ -74,6 +74,7 @@ class SignIn extends Component {
             <Typography component="h1" variant="h5">
               Sign in
             </Typography>
+            {this.state.error && <Alert xs variant="outlined" severity="error">{this.state.error}</Alert>}
             <form className={classes.form} noValidate onSubmit={this.handleSubmit}>
               <TextField
                   variant="outlined"
@@ -133,7 +134,16 @@ class SignIn extends Component {
   }
 
   async loginUser(email, password) {
-    const json = await AuthService.login(email, password);
+    try {
+      await AuthService.login(email, password);
+    }
+    catch(e)
+    {
+      this.setState({
+        error: e
+      });
+    }
+    
   }
 }
 

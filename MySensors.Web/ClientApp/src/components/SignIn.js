@@ -38,7 +38,7 @@ const useStyles = theme => ({
 
 class SignIn extends Component {
   static displayName = SignIn.name;
-
+  
   constructor(props) {
     super(props);
     this.state = { email: "", password: "", remember: true, error: "", loading: true };
@@ -136,6 +136,7 @@ class SignIn extends Component {
   async loginUser(email, password) {
     try {
       await AuthService.login(email, password);
+      window.location.href = "/sensors";
     }
     catch(e)
     {

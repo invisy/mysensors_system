@@ -10,7 +10,13 @@
         });
         
         if(response.ok)
-            return await response.json();
+        {
+            let responseObject = await response.json();
+            if (responseObject.token) {
+                localStorage.setItem("user", JSON.stringify(responseObject));
+            }
+            return response.ok;
+        }
         else if(response.status === 400 || response.status === 401)
             throw await response.text()
         else
@@ -40,7 +46,7 @@
     }
 
     getCurrentUser() {
-        return JSON.parse(localStorage.getItem('user'));;
+        return JSON.parse(localStorage.getItem('user'));
     }
 }
 

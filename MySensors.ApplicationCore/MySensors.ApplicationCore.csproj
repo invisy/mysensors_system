@@ -6,10 +6,7 @@
 
     <ItemGroup>
       <PackageReference Include="Ardalis.Specification" Version="5.1.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Specifications" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.1" />
     </ItemGroup>
 
 </Project>

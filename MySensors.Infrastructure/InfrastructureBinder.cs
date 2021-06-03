@@ -3,6 +3,7 @@ using MySensors.Infrastructure.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MySensors.ApplicationCore.Entities;
 using MySensors.ApplicationCore.Interfaces;
 
 namespace MySensors.Infrastructure
@@ -11,6 +12,13 @@ namespace MySensors.Infrastructure
     {
         public static IServiceCollection BindInfrastructureLayer(this IServiceCollection services, string connectionString)
         {
+            services.AddScoped<IAsyncRepository<int, Sensor>, GenericRepository<int, Sensor>>();
+            services.AddScoped<IAsyncRepository<int, SensorParameter>, GenericRepository<int, SensorParameter>>();
+            services.AddScoped<IAsyncRepository<int, SensorParameterValue>, GenericRepository<int, SensorParameterValue>>();
+            services.AddScoped<IAsyncRepository<int, SensorUpdateTime>, GenericRepository<int, SensorUpdateTime>>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
+            
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
                 {
                     config.SignIn.RequireConfirmedEmail = false;

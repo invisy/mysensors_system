@@ -14,11 +14,10 @@ namespace MySensors.ApplicationCore.Entities
         private readonly List<SensorParameterValue> _sensorParameterValues = new();
         public IEnumerable<SensorParameterValue> SensorParameterValues => _sensorParameterValues.AsReadOnly();
 
-        public SensorParameter(string humanReadableName, string requestName, IEnumerable<SensorParameterValue> values)
+        public SensorParameter(string humanReadableName, string requestName)
         {
             UpdateHumanReadableName(humanReadableName);
             UpdateRequestName(requestName);
-            _sensorParameterValues = values.ToList();
         }
         
         public void UpdateHumanReadableName(string name)

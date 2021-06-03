@@ -11,7 +11,10 @@ namespace MySensors.Infrastructure
     {
         public static IServiceCollection BindInfrastructureLayer(this IServiceCollection services, string connectionString)
         {
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(config =>
+                {
+                    config.SignIn.RequireConfirmedEmail = false;
+                })
                 .AddDefaultUI()
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
@@ -21,6 +24,7 @@ namespace MySensors.Infrastructure
 
             services.AddDbContext<AppIdentityDbContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "TestIdentity"));
+            
 
             services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 

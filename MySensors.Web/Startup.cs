@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using MySensors.ApplicationCore;
 using MySensors.ApplicationCore.Constants;
 using MySensors.Infrastructure;
 
@@ -25,25 +27,26 @@ namespace MySensors.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.BindCoreLayer();
             services.BindInfrastructureLayer(Configuration.GetConnectionString("MySensorsDB"));
             
-            services.AddAuthentication(x =>
+            var key = Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY);
+            services.AddAuthentication(config =>
                 {
-                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    config.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    config.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    config.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(options =>
+                .AddJwtBearer(config =>
                 {
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters
+                    config.RequireHttpsMetadata = false;
+                    config.SaveToken = true;
+                    config.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = true,
-                        ValidIssuer = AuthorizationConstants.ISSUER,
-                        ValidateAudience = true,
-                        ValidAudience = AuthorizationConstants.AUDIENCE,
-                        ValidateLifetime = true
-                        //IssuerSigningKey = AuthorizationConstants.GetSymmetricSecurityKey(),
-                        //ValidateIssuerSigningKey = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
                     };
                 });
 

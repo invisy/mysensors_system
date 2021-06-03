@@ -65,7 +65,7 @@ namespace MySensors.Web.Controllers
                 return UnprocessableEntity(result);
 
             await _userManager.AddToRoleAsync(user, Roles.USERS);
-            
+
             return Ok("Сongratulations! You`ve been successfully registered. Now you can login to your acc.");
         }
     }

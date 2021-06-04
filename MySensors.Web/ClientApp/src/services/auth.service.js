@@ -1,5 +1,5 @@
 ﻿class AuthService {
-    async login(login, password) {
+    async login(login, password, remember) {
         const data = { login: login, password: password };
         const response = await fetch("api/account/login", {
             method: 'POST',
@@ -13,7 +13,10 @@
         {
             let responseObject = await response.json();
             if (responseObject.token) {
-                localStorage.setItem("user", JSON.stringify(responseObject));
+                if(remember)
+                    localStorage.setItem("user", JSON.stringify(responseObject));
+                else
+                    sessionStorage.setItem("user", JSON.stringify(responseObject));
             }
             return response.ok;
         }
@@ -25,6 +28,7 @@
 
     logout() {
         localStorage.removeItem("user");
+        sessionStorage.removeItem("user");
     }
 
     async register(firstname, lastname, email, password) {
@@ -46,7 +50,8 @@
     }
 
     getCurrentUser() {
-        return JSON.parse(localStorage.getItem('user'));
+        const userLocalStorage = JSON.parse(localStorage.getItem('user'));
+        return userLocalStorage ? userLocalStorage: JSON.parse(sessionStorage.getItem('user'));
     }
 }
 

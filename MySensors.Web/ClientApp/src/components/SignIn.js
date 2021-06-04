@@ -58,7 +58,7 @@ class SignIn extends Component {
   async handleSubmit(event)
   {
     event.preventDefault();
-    await this.loginUser(this.state.email, this.state.password);
+    await this.loginUser(this.state.email, this.state.password, this.state.remember);
   }
   
   render () {
@@ -133,9 +133,9 @@ class SignIn extends Component {
     );
   }
 
-  async loginUser(email, password) {
+  async loginUser(email, password, remember) {
     try {
-      await AuthService.login(email, password);
+      await AuthService.login(email, password, remember);
       window.location.href = "/sensors";
     }
     catch(e)

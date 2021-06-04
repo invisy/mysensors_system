@@ -18,8 +18,23 @@ class SensorsService {
             throw "Unknown error";
     }
 
-    getCurrentUser() {
-        return JSON.parse(localStorage.getItem('user'));
+    async addSensor(sensor) {
+        let auth = authHeader();
+        const response = await fetch("/api/sensors/add", {
+            method: 'POST',
+            body: JSON.stringify(sensor),
+            headers: {
+                'Content-Type': 'application/json',
+                ...auth
+            }
+        });
+
+        if(response.ok)
+            return response.ok;
+        else if(response.status === 400 || response.status === 401)
+            throw await response.text()
+        else
+            throw "Unknown error";
     }
 }
 

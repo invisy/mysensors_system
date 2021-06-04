@@ -11,7 +11,6 @@ namespace MySensors.ApplicationCore.Interfaces
         Task ChangeName(int sensorId, string name);
         Task ChangeToken(int id);
         Task RemoveSensor(int id);
-        Task AddNewData(int id);
         Task<string> GetOwnerUserId(int sensorId);
     }
 }

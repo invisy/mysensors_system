@@ -11,10 +11,13 @@ namespace MySensors.ApplicationCore.Entities
         public SensorUpdateTime SensorUpdateTime { get; private set; }
         public int SensorUpdateTimeId { get; private set; }
 
-        public SensorParameterValue(double value, int sensorUpdateTimeId)
+        public SensorParameterValue()
+        {
+        }
+        public SensorParameterValue(double value, SensorUpdateTime sensorUpdateTime)
         {
             SetValue(value);
-            SetSensorUpdateTimeId(sensorUpdateTimeId);
+            SensorUpdateTime = sensorUpdateTime;
         }
         
         public void SetValue(double value)
@@ -22,13 +25,6 @@ namespace MySensors.ApplicationCore.Entities
             if (value > int.MaxValue)
                 throw new ArgumentOutOfRangeException(nameof(value));
             Value = value;
-        }
-
-        public void SetSensorUpdateTimeId(int id)
-        {
-            if (id <= 0)
-                throw new ArgumentOutOfRangeException(nameof(id));
-            SensorUpdateTimeId = id;
         }
     }
 }

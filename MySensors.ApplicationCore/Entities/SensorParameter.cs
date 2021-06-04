@@ -9,6 +9,7 @@ namespace MySensors.ApplicationCore.Entities
     {
         public string HumanReadableName { get; private set; }
         public string RequestName { get; private set; }
+        public Sensor Sensor { get; private set; }
         public int SensorId { get; private set; }
         
         private readonly List<SensorParameterValue> _sensorParameterValues = new();
@@ -34,7 +35,7 @@ namespace MySensors.ApplicationCore.Entities
             RequestName = name;
         }
         
-        public void AddSensorParameter(SensorParameterValue sensorParameterValue)
+        public void AddSensorParameterValue(SensorParameterValue sensorParameterValue)
         {
             _sensorParameterValues.Add(sensorParameterValue);
         }

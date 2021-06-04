@@ -12,5 +12,17 @@ namespace MySensors.ApplicationCore.Mappers
 
             return entity;
         }
+        
+        public override SensorParameterDTO  Map(SensorParameter entity)
+        {
+            SensorParameterDTO dto = new()
+            {
+                Id = entity.Id,
+                HumanReadableName = entity.HumanReadableName,
+                RequestName = entity.RequestName
+            };
+
+            return dto;
+        }
     }
 }

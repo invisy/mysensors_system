@@ -8,8 +8,6 @@ namespace MySensors.ApplicationCore.Entities
 
         public SensorUpdateTime(DateTime dateTime)
         {
-            if (dateTime < DateTime.Now)
-                throw new ArgumentOutOfRangeException(nameof(dateTime));
             DateTime = dateTime;
         }
     }

@@ -102,15 +102,8 @@ namespace MySensors.ApplicationCore.Services
             await _uow.SaveChanges();
         }
         
-        public async Task AddNewData(int id)
-        {
-            Sensor sensorEntity = await _sensorRepository.GetByIdAsync(id);
-            if(sensorEntity  == null)
-                throw new EntityNotFoundException();
-            _sensorRepository.Delete(sensorEntity);
-            await _uow.SaveChanges();
-        }
-
+        
+        
         public async Task<string> GetOwnerUserId(int sensorId)
         {
             var spec = new SensorOnlyUserIdSpecification(sensorId);

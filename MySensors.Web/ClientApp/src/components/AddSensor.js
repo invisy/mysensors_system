@@ -18,6 +18,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveCircleOutlineRoundedIcon from '@material-ui/icons/RemoveCircleOutlineRounded';
 import {green, red} from "@material-ui/core/colors";
+import SensorsService from '../services/sensors.service'
 
 const useStyles = theme => ({
   paper: {
@@ -56,9 +57,9 @@ class AddSensor extends Component {
     this.changeName = this.changeName.bind(this);
     this.changeParameterHumanName = this.changeParameterHumanName.bind(this);
     this.changeParameterRequestName = this.changeParameterRequestName.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.addItem = this.addItem.bind(this);
     this.removeItem = this.removeItem.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   changeName(event) {
@@ -97,7 +98,7 @@ class AddSensor extends Component {
   async handleSubmit(event)
   {
     event.preventDefault();
-    //await this.loginUser(this.state.email, this.state.password);
+    await this.addSensor(this.state.sensorInfo)
   }
   
   render () {
@@ -186,15 +187,16 @@ class AddSensor extends Component {
     );
   }
 
-  async loginUser(email, password) {
+  async addSensor(sensor) {
     try {
-      //await AuthService.login(email, password);
+      await SensorsService.addSensor(sensor);
+      window.location.href = "/sensors";
     }
     catch(e)
     {
-      this.setState({
+      /*this.setState({
         error: e
-      });
+      });*/
     }
     
   }

@@ -10,7 +10,7 @@ namespace MySensors.Infrastructure.Data.Config
         {
             builder.HasKey(x => x.Id);
             builder.HasMany(s => s.SensorParameters)
-                .WithOne()
+                .WithOne(p => p.Sensor)
                 .HasForeignKey(p => p.SensorId);
         }
     }

@@ -7,7 +7,7 @@ namespace MySensors.ApplicationCore.Specifications
     {
         public SensorOnlyUserIdSpecification(int id)
         {
-            Query.Select(sensor => sensor.Userid)
+            Query.Select(sensor => sensor.UserId)
                 .Where(sensor => sensor.Id == id);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using MySensors.ApplicationCore.DTOs;
 using MySensors.ApplicationCore.Entities;
@@ -37,7 +38,8 @@ namespace MySensors.ApplicationCore.Services
                 SensorOverviewDTO sensorOverviewDTO = new()
                 {
                     Id = sensor.Id,
-                    SensorName = sensor.SensorName
+                    SensorName = sensor.SensorName,
+                    LastUpdate = DateTime.Now.ToString("HH:mm MM/dd/yyyy")
                 };
                 
                 var sensorOverviewParamsDTO = new List<SensorOverviewParameterDTO>();
@@ -45,13 +47,14 @@ namespace MySensors.ApplicationCore.Services
                 foreach (var param in sensor.SensorParameters)
                 {
                     var paramValueSpec = new SensorParamLastValueSpecification(param.Id);
-                    var paramValue = await _sensorParameterValuesRepository.FirstOrDefaultAsync(paramValueSpec);
-                    
-                    sensorOverviewParamsDTO.Add(new SensorOverviewParameterDTO()
+                    SensorParameterValue paramValue = await _sensorParameterValuesRepository.FirstOrDefaultAsync(paramValueSpec);
+
+                    var asdsa = new SensorOverviewParameterDTO()
                     {
                         HumanReadableName = param.HumanReadableName,
-                        Value = paramValue.Value
-                    });
+                        Value = paramValue?.Value
+                    };
+                    sensorOverviewParamsDTO.Add(asdsa);
                 }
 
                 sensorOverviewDTO.SensorParameters = sensorOverviewParamsDTO;
@@ -115,7 +118,7 @@ namespace MySensors.ApplicationCore.Services
             if(sensor == null)
                 throw new EntityNotFoundException();
 
-            return sensor.Userid;
+            return sensor.UserId;
         }
     }
 }

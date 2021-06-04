@@ -11,8 +11,8 @@ namespace MySensors.ApplicationCore
     {
         public static IServiceCollection BindCoreLayer(this IServiceCollection services)
         {
-            services.AddSingleton<IMapper<SensorParameter, SensorParameterDTO>, SensorParameterMapper>();
-            services.AddSingleton<IMapper<Sensor, SensorDTO>, SensorMapper>();
+            services.AddScoped<IMapper<SensorParameter, SensorParameterDTO>, SensorParameterMapper>();
+            services.AddScoped<IMapper<Sensor, SensorDTO>, SensorMapper>();
             
             services.AddScoped<ISensorsService, SensorsService>();
 

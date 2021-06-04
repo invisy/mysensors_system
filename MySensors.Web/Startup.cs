@@ -28,7 +28,9 @@ namespace MySensors.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.BindCoreLayer();
-            services.BindInfrastructureLayer(Configuration.GetConnectionString("MySensorsDB"));
+            var connStringAppDb = Configuration.GetConnectionString("MySensorsDB");
+            var connStringIdentity = Configuration.GetConnectionString("MySensorsIdentityDB");
+            services.BindInfrastructureLayer(connStringAppDb, connStringIdentity);
             
             var key = Encoding.ASCII.GetBytes(AuthorizationConstants.JWT_SECRET_KEY);
             services.AddAuthentication(config =>

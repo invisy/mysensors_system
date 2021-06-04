@@ -10,15 +10,11 @@ namespace MySensors.Infrastructure
 {
     public static class InfrastructureBinder
     {
-        public static IServiceCollection BindInfrastructureLayer(this IServiceCollection services, string connectionString)
+        public static IServiceCollection BindInfrastructureLayer(this IServiceCollection services, string connectionString, string identityConnectionString)
         {
-            services.AddScoped<IAsyncRepository<int, Sensor>, GenericRepository<int, Sensor>>();
-            services.AddScoped<IAsyncRepository<int, SensorParameter>, GenericRepository<int, SensorParameter>>();
-            services.AddScoped<IAsyncRepository<int, SensorParameterValue>, GenericRepository<int, SensorParameterValue>>();
-            services.AddScoped<IAsyncRepository<int, SensorUpdateTime>, GenericRepository<int, SensorUpdateTime>>();
+            services.AddScoped(typeof(IAsyncRepository<,>), typeof(GenericRepository<,>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            
-            
+
             services.AddIdentity<ApplicationUser, IdentityRole>(config =>
                 {
                     config.SignIn.RequireConfirmedEmail = false;
@@ -27,12 +23,17 @@ namespace MySensors.Infrastructure
                 .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
             
-            services.AddDbContext<MySensorsAppContext>(options =>
+            /*services.AddDbContext<MySensorsAppContext>(options =>
                 options.UseInMemoryDatabase(databaseName: "Test"));
 
             services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseInMemoryDatabase(databaseName: "TestIdentity"));
+                options.UseInMemoryDatabase(databaseName: "TestIdentity"));*/
             
+            services.AddDbContext<MySensorsAppContext>(options =>
+                options.UseSqlServer(connectionString));
+
+            services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseSqlServer(identityConnectionString));
 
             services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
 

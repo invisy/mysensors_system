@@ -9,7 +9,7 @@ namespace MySensors.ApplicationCore.Entities
     {
         public string SensorName { get; private set; }
         public string SensorToken { get; private set; }
-        public string Userid { get; private set; }
+        public string UserId { get; private set; }
 
         private readonly List<SensorParameter> _sensorParameters = new();
         public IEnumerable<SensorParameter> SensorParameters => _sensorParameters.AsReadOnly();
@@ -17,7 +17,6 @@ namespace MySensors.ApplicationCore.Entities
         public Sensor(string sensorName)
         {
             UpdateSensorName(sensorName);
-            
         }
         
         public void UpdateSensorName(string name)
@@ -41,7 +40,7 @@ namespace MySensors.ApplicationCore.Entities
         {
             if (userId.Length == 0)
                 throw new ArgumentOutOfRangeException(nameof(userId));
-            Userid = userId;
+            UserId = userId;
         }
         
         public void SetNewToken(string token)

@@ -6,6 +6,7 @@ namespace MySensors.ApplicationCore.DTOs
     public class SensorDTO : BaseDTO<int>
     {
         public string SensorName { get; set; }
+        public string UserId { get; set; }
         public IEnumerable<SensorParameterDTO> SensorParameters { get; set; }
     }
 }

@@ -29,5 +29,15 @@ namespace MySensors.Web.Controllers
 
             return Ok(sensors);
         }
+        
+        // POST
+        [HttpPost("add")]
+        public async Task<IActionResult> Add(SensorDTO sensor)
+        {
+            sensor.UserId = User.GetUserId();
+            await _sensorsService.AddSensor(sensor);
+
+            return Ok();
+        }
     }
 }

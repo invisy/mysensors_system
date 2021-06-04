@@ -7,6 +7,7 @@ import { Counter } from './components/Counter';
 import SignIn from './components/SignIn';
 import SignUp from './components/SignUp';
 import Sensors from "./components/Sensors";
+import AddSensor from "./components/AddSensor";
 import {ShowSensorDetails} from "./components/ShowSensorDetails";
 
 import './custom.css'
@@ -21,7 +22,9 @@ export default class App extends Component {
         <Route exact path='/sign-in' component={SignIn} />
         <Route exact path='/sign-up' component={SignUp} />
         <Route exact path='/sensors/' component={Sensors} />
+        <Route exact path='/sensors/add' component={AddSensor} />
         <Route exact path='/sensors/details/:id/' component={ShowSensorDetails} />
+        <Route exact path='/sensors/properties/:id/' component={ShowSensorDetails} />
       </Layout>
     );
   }

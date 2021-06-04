@@ -16,6 +16,8 @@ import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveCircleOutlineRoundedIcon from '@material-ui/icons/RemoveCircleOutlineRounded';
+import {green, red} from "@material-ui/core/colors";
 
 const useStyles = theme => ({
   paper: {
@@ -42,25 +44,54 @@ class AddSensor extends Component {
   
   constructor(props) {
     super(props);
-    this.state = { name: "", sensorParameters: [{
-        HumanReadableName: "",
-        RequestName: ""
-      },
-        {
-          HumanReadableName: "",
-          RequestName: ""
-        }] };
-    this.handleInputChange = this.handleInputChange.bind(this);
+    this.state = { 
+      sensorInfo: { 
+          sensorName: "", 
+          sensorParameters: [{
+            humanReadableName: "",
+            requestName: ""
+        }] 
+      }
+    };
+    this.changeName = this.changeName.bind(this);
+    this.changeParameterHumanName = this.changeParameterHumanName.bind(this);
+    this.changeParameterRequestName = this.changeParameterRequestName.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.addItem = this.addItem.bind(this);
+    this.removeItem = this.removeItem.bind(this);
   }
 
-  handleInputChange(event) {
+  changeName(event) {
     const target = event.target;
-    const value = target.type === 'checkbox' ? target.checked : target.value;
-    const name = target.name;
-    this.setState({
-      [name]: value
-    });
+    this.state.sensorInfo.sensorName = target.value;
+    this.forceUpdate();
+  }
+
+  changeParameterHumanName(event, id) {
+    const target = event.target;
+    this.state.sensorInfo.sensorParameters[id].humanReadableName = target.value;
+    this.forceUpdate();
+  }
+
+  changeParameterRequestName(event, id) {
+    const target = event.target;
+    this.state.sensorInfo.sensorParameters[id].requestName = target.value;
+    this.forceUpdate();
+  }
+
+  addItem()
+  {
+    this.state.sensorInfo.sensorParameters.push({humanReadableName: "", requestName: ""});
+
+    this.forceUpdate();
+  }
+  
+  removeItem(event, id)
+  {
+    if(this.state.sensorInfo.sensorParameters.length > 1)
+      this.state.sensorInfo.sensorParameters.splice(id, 1);
+
+    this.forceUpdate();
   }
   
   async handleSubmit(event)
@@ -71,10 +102,9 @@ class AddSensor extends Component {
   
   render () {
     const { classes } = this.props;
-    var sensorParameters = this.state.sensorParameters;
 
     return (
-        <Container component="main" maxWidth="sm">
+        <Container component="main" maxWidth="md">
           <CssBaseline/>
           <div className={classes.paper}>
             <Avatar className={classes.avatar}>
@@ -94,16 +124,16 @@ class AddSensor extends Component {
                       fullWidth
                       id="name"
                       label="Sensor name"
-                      name="name"
+                      name="sensorName"
                       autoComplete="name"
                       autoFocus
-                      value={this.state.name}
-                      onChange={this.handleInputChange}
+                      value={this.state.sensorInfo.sensorName}
+                      onChange={this.changeName}
                   />
                 </Grid>
-                {sensorParameters.map((parameter, index) =>
-                    <Grid key={index} container spacing={2} item>
-                      <Grid item xs={12} sm={6}>
+                {this.state.sensorInfo.sensorParameters.map((parameter, index) =>
+                    <Grid alignItems="stretch" key={index} container spacing={2} item>
+                      <Grid item xs={10} sm={5}>
                         <TextField
                             name="humanReadableName"
                             variant="outlined"
@@ -111,11 +141,11 @@ class AddSensor extends Component {
                             fullWidth
                             id="humanReadableName"
                             label={"Readable parameter " + (index+1) + " name"}
-                            value={parameter.HumanReadableName}
-                            onChange={this.handleInputChange}
+                            value={parameter.humanReadableName}
+                            onChange={e => this.changeParameterHumanName(e, index)}
                         />
                       </Grid>
-                      <Grid item xs={12} sm={6}>
+                      <Grid item xs={10} sm={5}>
                         <TextField
                             variant="outlined"
                             required
@@ -123,14 +153,22 @@ class AddSensor extends Component {
                             id="requestName"
                             label={"Parameter " + (index+1) + "  name for request"}
                             name="requestName"
-                            value={parameter.RequestName}
-                            onChange={this.handleInputChange}
+                            value={parameter.requestName}
+                            onChange={e => this.changeParameterRequestName(e, index)}
                         />
                       </Grid>
+                      {index > 0 && <Grid style={{display: "flex", flexDirection: "column"}} item xs={1} sm={2}>
+                        <Button onClick={e => this.removeItem(e, index)}
+                            style={{height: "100%"}}
+                            startIcon={<RemoveCircleOutlineRoundedIcon style={{fontSize: 30, color: red[500]}}/>}
+                        />
+                      </Grid>}
                     </Grid>
                 )}
-                <Grid item sm={1}>
-                  <AddCircleOutlineIcon fontSize="large" style={{color: "green"}}/>
+                <Grid style={{display: "flex", flexDirection: "column"}} item xs={1} sm={2}>
+                  <Button onClick={this.addItem}
+                       startIcon={<AddCircleOutlineIcon style={{fontSize: 30, color: green[500]}}/>} 
+                  />
                 </Grid>
               </Grid>
               <Button

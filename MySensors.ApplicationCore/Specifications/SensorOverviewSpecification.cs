@@ -7,15 +7,13 @@ namespace MySensors.ApplicationCore.Specifications
     {
         public SensorOverviewSpecification()
         {
-            Query.Include(s => s.SensorParameters)
-                .ThenInclude(p => p.SensorParameterValues);
+            Query.Include(s => s.SensorParameters);
         }
         
         public SensorOverviewSpecification(string id)
         {
-            Query.Where(s => s.Userid == id)
-                .Include(s => s.SensorParameters)
-                .ThenInclude(p => p.SensorParameterValues);
+            Query.Where(s => s.UserId == id)
+                .Include(s => s.SensorParameters);
         }
     }
 }

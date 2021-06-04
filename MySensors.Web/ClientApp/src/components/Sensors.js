@@ -8,7 +8,8 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import SensorsService from '../services/sensors.service'
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-
+import AddBoxIcon from '@material-ui/icons/AddBox';
+import {green} from "@material-ui/core/colors";
 
 const useStyles = theme => ({
   paper: {
@@ -71,12 +72,12 @@ class Sensors extends Component {
             <Card style={{height: "100%"}}>
               <CardHeader
                   action={
-                    <IconButton aria-label="settings">
+                    <IconButton href={"/sensors/properties/" + sensor.id} aria-label="settings">
                       <MoreVertIcon />
                     </IconButton>
                   }
                   title={sensor.sensorName}
-                  subheader="Updated at September 14, 2016"
+                  subheader={sensor.lastUpdate ? "Updated at " + sensor.lastUpdate: "No data"}
               />
                 <CardMedia
                     image="/static/images/cards/sensor.jpg"
@@ -85,18 +86,21 @@ class Sensors extends Component {
                   {sensor.sensorParameters.map((parameter, index) =>
                   <Typography variant="body2" color="textSecondary" component="p">
                     <Typography display="inline" style={{fontWeight: "bold"}}>{parameter.humanReadableName}: </Typography>
-                    <Typography display="inline">{parameter.value}</Typography>
+                    <Typography display="inline">{parameter.value ? parameter.value:"No data"}</Typography>
                   </Typography>
                   )}
                 </CardContent>
               <CardActions>
-                <Button size="small" color="primary">
+                <Button href={"/sensors/details/" + sensor.id} size="small" color="primary">
                   Learn More
                 </Button>
               </CardActions>
             </Card>
           </Grid>
         )}
+          <Grid style={{display: "flex", flexDirection: "column"}} item xs={12} sm={4} lg={3}>
+            <Button href="/sensors/add" style={{height: "100%"}} startIcon={<AddBoxIcon style={{fontSize: 50, color: green[500]}}/>}/>
+          </Grid>
         </Grid>
     );
   }

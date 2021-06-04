@@ -17,6 +17,7 @@ namespace MySensors.ApplicationCore.Mappers
         public override Sensor Map(SensorDTO dto)
         {
             Sensor sensorEntity = new Sensor(dto.SensorName);
+            sensorEntity.SetNewUserId(dto.UserId);
             sensorEntity.AddSensorMultipleParameters(_sensorParametersMapper.Map(dto.SensorParameters));
             
             return sensorEntity;

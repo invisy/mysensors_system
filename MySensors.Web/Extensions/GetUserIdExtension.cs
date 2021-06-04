@@ -7,7 +7,7 @@ namespace MySensors.Web.Extensions
     {
         public static string GetUserId(this ClaimsPrincipal user)
         {
-            return user.Claims.First(i => i.Type == "nameid").Value;
+            return user.Claims.First(i => i.Type == ClaimTypes.NameIdentifier).Value;
         }
     }
 }

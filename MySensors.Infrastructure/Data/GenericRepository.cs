@@ -36,8 +36,8 @@ namespace MySensors.Infrastructure.Data
 
         public async Task<TEntity> AddAsync(TEntity entity)
         {
-            await _dbContext.Set<TEntity>().AddAsync(entity);
-            return entity;
+            var result = await _dbContext.Set<TEntity>().AddAsync(entity);
+            return result.Entity;
         }
 
         public async Task UpdateAsync(TEntity entity)

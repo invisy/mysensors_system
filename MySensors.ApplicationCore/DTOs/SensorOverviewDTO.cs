@@ -6,7 +6,7 @@ namespace MySensors.ApplicationCore.DTOs
     public class SensorOverviewDTO : BaseDTO<int>
     {
         public string SensorName { get; set; }
-        public DateTime LastUpdate { get; set; }
+        public string LastUpdate { get; set; }
         public IEnumerable<SensorOverviewParameterDTO> SensorParameters { get; set; }
     }
 }

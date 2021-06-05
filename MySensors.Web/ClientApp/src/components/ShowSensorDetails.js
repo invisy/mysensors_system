@@ -52,7 +52,6 @@ export class ShowSensorDetails extends Component {
   }
   
   render () {
-      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     return (
         <Grid maxWidth="xs" container spacing={2}>
             <Grid item md={2}>
@@ -79,7 +78,7 @@ export class ShowSensorDetails extends Component {
             <Grid item xs={12}>
                 <Paper>
                     {this.state.selection != null && <span>Selected value: {this.state.selection}</span>}
-                    <Chart data={this.state.values}>
+                    <Chart key={new Date().getTime()} data={this.state.values}>
                         <ArgumentAxis />
                         <ValueAxis />
                         {this.state.chartType === this.DaysEnum.Series && <SplineSeries name="spline" valueField="value" argumentField="updateDate" /> }
@@ -117,12 +116,10 @@ export class ShowSensorDetails extends Component {
             const result = await SensorsService.getValuesByParameterId(id, periodInSeconds);
             if(result.status === 200)
             {
-                console.log("data not setted")
                 await this.setState( {
                     values: result.data,
                     error: ""
                 });
-                console.log("data setted")
             }
         }
         catch

@@ -5,7 +5,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
@@ -15,6 +14,8 @@ import PropTypes from "prop-types";
 import {withStyles} from '@material-ui/core/styles';
 import Alert from "@material-ui/lab/Alert";
 import AuthService from "../services/auth.service";
+import { Link } from 'react-router-dom';
+import {ExpandLess} from "@material-ui/icons";
 
 const useStyles = theme => ({
   paper: {
@@ -131,12 +132,6 @@ class SignUp extends Component {
                       onChange={this.handleInputChange}
                   />
                 </Grid>
-                <Grid item xs={12}>
-                  <FormControlLabel
-                      control={<Checkbox name="marketingAgreement" type="checkbox" checked={this.state.marketingAgreement} onChange={this.handleInputChange} value="allowExtraEmails" color="primary"/>}
-                      label="I want to receive inspiration, marketing promotions and updates via email."
-                  />
-                </Grid>
               </Grid>
               <Button
                   type="submit"
@@ -149,8 +144,8 @@ class SignUp extends Component {
               </Button>
               <Grid container justify="flex-end">
                 <Grid item>
-                  <Link href="#" variant="body2">
-                    Already have an account? Sign in
+                  <Link to="/sign-in" variant="body2">
+                    {"Already have an account? Sign in"}
                   </Link>
                 </Grid>
               </Grid>
@@ -162,12 +157,20 @@ class SignUp extends Component {
 
   async registerUser(firstname, lastname, email, password) {
     try {
-      await AuthService.register(firstname, lastname, email, password);
+      const result = await AuthService.register(firstname, lastname, email, password);
+      if(result.status === 200)
+        this.props.history.push("/sign-in");
+      else
+      {
+        await this.setState({
+          error: result.data
+        });
+      }
     }
-    catch(e)
+    catch
     {
       await this.setState({
-        error: e
+        error: "Connection problems..."
       });
     }
 

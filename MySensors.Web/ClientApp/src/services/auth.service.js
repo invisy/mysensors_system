@@ -41,10 +41,7 @@
         });
 
         result.status = response.status;
-        if(response.ok)
-            result.data = await response.json();
-        else
-            result.data = await response.text();
+        result.data = await response.text();
         
         return result;
     }

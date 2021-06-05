@@ -40,15 +40,19 @@ export class ShowSensorDetails extends Component {
       const target = event.target;
       const value = target.type === 'checkbox' ? target.checked : target.value;
       const name = target.name;
-      await this.setState({
+      
+      this.setState({
           [name]: value
+      }, () =>  {
+          if(name === "dataRange" || name === "sensorParameterId")
+              this.loadValues(this.state.sensorParameterId, this.state.dataRange);
       });
 
-      if(name === "dataRange" || name === "sensorParameterId")
-        await this.loadValues(this.state.sensorParameterId, this.state.dataRange);
+      
   }
   
   render () {
+      console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
     return (
         <Grid maxWidth="xs" container spacing={2}>
             <Grid item md={2}>
@@ -113,10 +117,12 @@ export class ShowSensorDetails extends Component {
             const result = await SensorsService.getValuesByParameterId(id, periodInSeconds);
             if(result.status === 200)
             {
+                console.log("data not setted")
                 await this.setState( {
                     values: result.data,
                     error: ""
                 });
+                console.log("data setted")
             }
         }
         catch

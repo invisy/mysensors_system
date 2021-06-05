@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -62,11 +63,11 @@ namespace MySensors.Web.Controllers
             
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)
-                return UnprocessableEntity(result);
+                return UnprocessableEntity(result.Errors.FirstOrDefault().Description);
 
             await _userManager.AddToRoleAsync(user, Roles.USERS);
 
-            return Ok("Сongratulations! You`ve been successfully registered. Now you can login to your acc.");
+            return Ok();
         }
     }
 }

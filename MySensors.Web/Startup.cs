@@ -59,7 +59,11 @@ namespace MySensors.Web
                     .Build();
             });
             
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .ConfigureApiBehaviorOptions(options =>
+                {
+                    options.SuppressModelStateInvalidFilter = true;
+                });
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });

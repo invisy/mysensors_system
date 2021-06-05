@@ -37,6 +37,26 @@ class SensorsService {
             throw "Unknown error";
     }
 
+    async removeSensorById(id) {
+        let result = { status: null, data: null};
+        let auth = authHeader();
+        const response = await fetch("/api/sensors/" + id, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                ...auth
+            }
+        });
+
+        result.status = response.status;
+        if(response.ok)
+            result.data = await response.text();
+        else
+            result.data = await response.text();
+
+        return result;
+    }
+
     async getToken(id) {
         let result = { status: null, data: null};
         let auth = authHeader();

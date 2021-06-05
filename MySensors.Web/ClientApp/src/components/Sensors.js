@@ -72,7 +72,7 @@ class Sensors extends Component {
                   {sensor.sensorParameters.map((parameter, index) =>
                   <Typography variant="body2" color="textSecondary" component="p">
                     <Typography display="inline" style={{fontWeight: "bold"}}>{parameter.humanReadableName}: </Typography>
-                    <Typography display="inline">{parameter.value ? parameter.value:"No data"}</Typography>
+                    <Typography display="inline">{parameter.value != null ? parameter.value:"No data"}</Typography>
                   </Typography>
                   )}
                 </CardContent>

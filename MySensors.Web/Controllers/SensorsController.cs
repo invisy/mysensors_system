@@ -67,5 +67,29 @@ namespace MySensors.Web.Controllers
 
             return NotFound();
         }
+        
+        // DELETE
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var sensorUserId = await _sensorsService.GetOwnerUserId(id);
+                if (sensorUserId == User.GetUserId())
+                {
+                    await _sensorsService.RemoveSensor(id);
+                    return Ok();
+                }
+            }
+            catch (EntityNotFoundException)
+            {
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return NotFound();
+        }
     }
 }

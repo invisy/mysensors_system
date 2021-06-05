@@ -17,10 +17,12 @@ namespace MySensors.ApplicationCore.Services
         private readonly IAsyncRepository<int, Sensor> _sensorRepository;
         private readonly IAsyncRepository<int, SensorParameterValue> _sensorParameterValuesRepository;
         private readonly IMapper<Sensor, SensorDTO> _sensorMapper;
+        private readonly ISensorTokenGenerator _tokenGenerator;
         
-        public SensorsService(IUnitOfWork uow, IMapper<Sensor, SensorDTO> sensorMapper)
+        public SensorsService(IUnitOfWork uow, IMapper<Sensor, SensorDTO> sensorMapper, ISensorTokenGenerator tokenGenerator)
         {
             _uow = uow;
+            _tokenGenerator = tokenGenerator;
             _sensorRepository = _uow.GetRepository<IAsyncRepository<int, Sensor>>();
             _sensorParameterValuesRepository = _uow.GetRepository<IAsyncRepository<int, SensorParameterValue>>();
             _sensorMapper = sensorMapper;
@@ -68,7 +70,7 @@ namespace MySensors.ApplicationCore.Services
         public async Task AddSensor(SensorDTO sensor)
         {
             Sensor sensorEntity = _sensorMapper.Map(sensor);
-            var token = SensorTokenGenerator.GenerateRandomUniqueToken();
+            var token = _tokenGenerator.GenerateRandomUniqueToken();
             sensorEntity.SetNewToken(token);
             await _sensorRepository.AddAsync(sensorEntity);
             await _uow.SaveChanges();
@@ -89,7 +91,7 @@ namespace MySensors.ApplicationCore.Services
             Sensor sensorEntity = await _sensorRepository.GetByIdAsync(id);
             if(sensorEntity == null)
                 throw new EntityNotFoundException();
-            var token = SensorTokenGenerator.GenerateRandomUniqueToken();
+            var token = _tokenGenerator.GenerateRandomUniqueToken();
             sensorEntity.SetNewToken(token);
             await _sensorRepository.UpdateAsync(sensorEntity);
             await _uow.SaveChanges();

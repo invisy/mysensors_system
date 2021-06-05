@@ -1,10 +1,11 @@
 ﻿using System;
+using MySensors.ApplicationCore.Interfaces;
 
 namespace MySensors.ApplicationCore.Extensions
 {
-    public static class SensorTokenGenerator
+    public class SensorTokenGenerator : ISensorTokenGenerator
     {
-        public static string GenerateRandomUniqueToken()
+        public string GenerateRandomUniqueToken()
         {
             var ticks = DateTime.Now.Ticks;
             var guid = Guid.NewGuid().ToString();

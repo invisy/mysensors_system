@@ -10,7 +10,7 @@ namespace MySensors.ApplicationCore.Mappers
             SensorParameterValueWithDateDTO dto = new()
             {
                 Value = entity.Value,
-                UpdateDate = entity.SensorUpdateTime.DateTime.ToString("HH:mm:ss MM/dd/yyyy")
+                UpdateDate = entity.SensorUpdateTime.DateTime.ToString("HH:mm:ss dd/MM/yyyy")
             };
 
             return dto;

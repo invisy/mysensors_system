@@ -39,6 +39,8 @@ class Sensors extends Component {
     super(props);
     
     this.state = { sensorsData: [], error: ""};
+
+    let timerId = setInterval(() => this.getSensorsData(), 5000);
   }
 
   async componentDidMount() {

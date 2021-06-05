@@ -35,11 +35,13 @@ namespace MySensors.ApplicationCore.Services
             
             foreach (var sensor in sensors)
             {
+                var specDateTime = new UpdateDateBySensorIdSpecification(sensor.Id);
+                var parameterValueWithLastDatetime = await _sensorParameterValuesRepository.FirstOrDefaultAsync(specDateTime);
                 SensorOverviewDTO sensorOverviewDTO = new()
                 {
                     Id = sensor.Id,
                     SensorName = sensor.SensorName,
-                    LastUpdate = DateTime.Now.ToString("HH:mm MM/dd/yyyy")
+                    LastUpdate = parameterValueWithLastDatetime?.SensorUpdateTime.DateTime.ToString("HH:mm dd/MM/yyyy")
                 };
                 
                 var sensorOverviewParamsDTO = new List<SensorOverviewParameterDTO>();

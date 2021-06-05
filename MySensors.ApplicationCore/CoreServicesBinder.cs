@@ -18,7 +18,7 @@ namespace MySensors.ApplicationCore
             services.AddSingleton<IMapper<SensorParameterValue, SensorParameterValueWithDateDTO>, SensorParameterValueWithDateMapper>();
 
             services.AddScoped<ISensorParametersService, SensorParametersService>();
-            services.AddScoped<ISensorValuesService, SensorValuesService>();
+            services.AddScoped<ISensorValuesService, SensorValuesService>(); 
             services.AddScoped<ISensorsService, SensorsService>();
 
             return services;

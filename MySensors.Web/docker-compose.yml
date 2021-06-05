@@ -1,0 +1,21 @@
+﻿version: '3.4'
+services:
+  ms-sql-server:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "MySensorsSecretPassword!"
+      MSSQL_PID: Express
+    ports:
+      - "1433:1433"
+  force-testing-service:
+    build:
+      dockerfile: MySensors.WEB/Dockerfile
+      context: .
+    environment:
+      DbServer: tcp:ms-sql-server
+      DbPort: "1433"
+      DbUser: "sa"
+      DbPassword: "MySensorsSecretPassword1!"
+    ports:
+      - "5001:80"

@@ -10,6 +10,7 @@ import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import AddBoxIcon from '@material-ui/icons/AddBox';
 import {green} from "@material-ui/core/colors";
+import {NavLink} from "react-router-dom";
 
 const useStyles = theme => ({
   paper: {
@@ -55,9 +56,11 @@ class Sensors extends Component {
             <Card style={{height: "100%"}}>
               <CardHeader
                   action={
-                    <IconButton href={"/sensors/properties/" + sensor.id} aria-label="settings">
-                      <MoreVertIcon />
-                    </IconButton>
+                    <NavLink to={"/sensors/properties/" + sensor.id}>
+                      <IconButton aria-label="settings">
+                        <MoreVertIcon />
+                      </IconButton>
+                    </NavLink>
                   }
                   title={sensor.sensorName}
                   subheader={sensor.lastUpdate ? "Updated at " + sensor.lastUpdate: "No data"}
@@ -74,15 +77,19 @@ class Sensors extends Component {
                   )}
                 </CardContent>
               <CardActions>
-                <Button href={"/sensors/details/" + sensor.id} size="small" color="primary">
-                  Learn More
-                </Button>
+                <NavLink to={"/sensors/details/" + sensor.id}>
+                  <Button size="small" color="primary">
+                    Learn More
+                  </Button>
+                </NavLink>
               </CardActions>
             </Card>
           </Grid>
         )}
           <Grid style={{display: "flex", flexDirection: "column"}} item xs={12} sm={4} lg={3}>
-            <Button href="/sensors/add" style={{height: "100%"}} startIcon={<AddBoxIcon style={{fontSize: 50, color: green[500]}}/>}/>
+            <NavLink style={{height: "100%"}} to="/sensors/add">
+              <Button style={{height: "100%", width: "100%"}} startIcon={<AddBoxIcon style={{fontSize: 50, color: green[500]}}/>}/>
+            </NavLink>
           </Grid>
         </Grid>
     );

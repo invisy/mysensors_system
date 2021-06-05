@@ -190,7 +190,7 @@ class AddSensor extends Component {
   async addSensor(sensor) {
     try {
       await SensorsService.addSensor(sensor);
-      window.location.href = "/sensors";
+      this.props.history.push("/sensors")
     }
     catch(e)
     {

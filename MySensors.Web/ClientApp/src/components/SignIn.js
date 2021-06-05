@@ -41,16 +41,16 @@ class SignIn extends Component {
   
   constructor(props) {
     super(props);
-    this.state = { email: "", password: "", remember: true, error: "", loading: true };
+    this.state = { email: "", password: "", remember: true, error: ""};
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleInputChange(event) {
+  async handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    this.setState({
+    await this.setState({
       [name]: value
     });
   }
@@ -135,16 +135,22 @@ class SignIn extends Component {
 
   async loginUser(email, password, remember) {
     try {
-      await AuthService.login(email, password, remember);
-      window.location.href = "/sensors";
+      const result = await AuthService.login(email, password, remember);
+      if(result.status === 200)
+        window.location.href = "/sensors";
+      else
+      {
+        await this.setState({
+          error: result.data
+        });
+      }
     }
-    catch(e)
+    catch
     {
-      this.setState({
-        error: e
+      await this.setState({
+        error: "Connection problems..."
       });
     }
-    
   }
 }
 

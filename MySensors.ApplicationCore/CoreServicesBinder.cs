@@ -13,7 +13,8 @@ namespace MySensors.ApplicationCore
         {
             services.AddScoped<IMapper<SensorParameter, SensorParameterDTO>, SensorParameterMapper>();
             services.AddScoped<IMapper<Sensor, SensorDTO>, SensorMapper>();
-            
+            services.AddScoped<IMapper<SensorParameterValue, SensorParameterValueWithDateDTO>, SensorParameterValueWithDateMapper>();
+
             services.AddScoped<ISensorParametersService, SensorParametersService>();
             services.AddScoped<ISensorValuesService, SensorValuesService>();
             services.AddScoped<ISensorsService, SensorsService>();

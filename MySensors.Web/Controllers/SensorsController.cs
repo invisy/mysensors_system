@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MySensors.ApplicationCore.DTOs;
+using MySensors.ApplicationCore.Exceptions;
 using MySensors.ApplicationCore.Interfaces;
 using MySensors.Web.Extensions;
+using MySensors.Web.ViewModels;
 
 namespace MySensors.Web.Controllers
 {
@@ -38,6 +42,30 @@ namespace MySensors.Web.Controllers
             await _sensorsService.AddSensor(sensor);
 
             return Ok();
+        }
+        
+        // GET
+        [HttpGet("token/{id}")]
+        public async Task<ActionResult<SensorToken>> GetToken(int id)
+        {
+            try
+            {
+                var sensorUserId = await _sensorsService.GetOwnerUserId(id);
+                if (sensorUserId == User.GetUserId())
+                {
+                    var sensorToken = new SensorToken() {Token = await _sensorsService.GetTokenBySensorId(id)};
+                    return sensorToken;
+                }
+            }
+            catch (EntityNotFoundException)
+            {
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return NotFound();
         }
     }
 }

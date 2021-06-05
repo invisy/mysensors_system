@@ -102,16 +102,23 @@ namespace MySensors.ApplicationCore.Services
             await _uow.SaveChanges();
         }
         
-        
-        
         public async Task<string> GetOwnerUserId(int sensorId)
         {
             var spec = new SensorOnlyUserIdSpecification(sensorId);
-            var sensor = await _sensorRepository.FirstAsync(spec);
+            var sensor = await _sensorRepository.FirstOrDefaultAsync(spec);
             if(sensor == null)
                 throw new EntityNotFoundException();
 
             return sensor.UserId;
+        }
+        
+        public async Task<string> GetTokenBySensorId(int sensorId)
+        {
+            var spec = new SensorOnlyTokenSpecification(sensorId);
+            var sensor = await _sensorRepository.FirstOrDefaultAsync(spec);
+            if(sensor == null)
+                throw new EntityNotFoundException();
+            return sensor.SensorToken;
         }
     }
 }

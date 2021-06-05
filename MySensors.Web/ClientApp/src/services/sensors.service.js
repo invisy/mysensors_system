@@ -36,6 +36,63 @@ class SensorsService {
         else
             throw "Unknown error";
     }
+
+    async getToken(id) {
+        let result = { status: null, data: null};
+        let auth = authHeader();
+        const response = await fetch("/api/sensors/token/" + id, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...auth
+            }
+        });
+
+        result.status = response.status;
+        if(response.ok)
+            result.data = await response.json();
+        else
+            result.data = await response.text();
+        
+        return result;
+    }
+
+    async getParametersBySensorId(id) {
+        let result = { status: null, data: null};
+        let auth = authHeader();
+        const response = await fetch("/api/sensorParameters/sensor/" + id, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...auth
+            }
+        });
+
+        result.status = response.status;
+        if(response.ok)
+            result.data = await response.json();
+        else
+            result.data = await response.text();
+
+        return result;
+    }
+
+    async getValuesByParameterId(id, periodInSeconds) {
+        let result = { status: null, data: null};
+        let auth = authHeader();
+        const response = await fetch("/api/sensorData/" + id + "/" + periodInSeconds, {
+            headers: {
+                'Content-Type': 'application/json',
+                ...auth
+            }
+        });
+
+        result.status = response.status;
+        if(response.ok)
+            result.data = await response.json();
+        else
+            result.data = await response.text();
+
+        return result;
+    }
 }
 
 export default new SensorsService();

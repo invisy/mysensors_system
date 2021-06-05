@@ -1,5 +1,6 @@
 ﻿class AuthService {
     async login(login, password, remember) {
+        let result = { status: null, data: null};
         const data = { login: login, password: password };
         const response = await fetch("api/account/login", {
             method: 'POST',
@@ -8,22 +9,19 @@
                 'Content-Type': 'application/json'
             }
         });
-        
-        if(response.ok)
-        {
-            let responseObject = await response.json();
-            if (responseObject.token) {
-                if(remember)
-                    localStorage.setItem("user", JSON.stringify(responseObject));
-                else
-                    sessionStorage.setItem("user", JSON.stringify(responseObject));
-            }
-            return response.ok;
+
+        result.status = response.status;
+        if(response.ok) {
+            result.data = await response.json();
+            if(remember)
+                localStorage.setItem("user", JSON.stringify(result.data));
+            else
+                sessionStorage.setItem("user", JSON.stringify(result.data));
         }
-        else if(response.status === 400 || response.status === 401)
-            throw await response.text()
         else
-            throw "Unknown error";
+            result.data = await response.text();
+
+        return result;
     }
 
     logout() {
@@ -32,6 +30,7 @@
     }
 
     async register(firstname, lastname, email, password) {
+        let result = { status: null, data: null};
         const data = {name: firstname, surname: lastname, email: email, password: password };
         const response = await fetch("api/account/register", {
             method: 'POST',
@@ -41,12 +40,13 @@
             }
         });
 
+        result.status = response.status;
         if(response.ok)
-            return await response.json();
-        else if(response.status === 400 || response.status === 422)
-            throw await response.text()
+            result.data = await response.json();
         else
-            throw "Unknown error";
+            result.data = await response.text();
+        
+        return result;
     }
 
     getCurrentUser() {

@@ -1,6 +1,6 @@
 {
-  "short_name": "MySensors.Web",
-  "name": "MySensors.Web",
+  "short_name": "MySensors",
+  "name": "MySensors",
   "icons": [
     {
       "src": "favicon.ico",

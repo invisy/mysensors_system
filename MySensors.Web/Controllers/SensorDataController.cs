@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -65,6 +66,25 @@ namespace MySensors.Web.Controllers
             }
 
             return Ok("Ok");
+        }
+        
+        [HttpGet("{id}/{periodInSeconds}")]
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<SensorParameterValueWithDateDTO>>> GetValues(int id, int periodInSeconds)
+        {
+            try
+            {
+                var values = await _sensorValuesService.GetValuesByParamId(id, periodInSeconds);
+                return Ok(values);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (SystemException e)
+            {
+                return BadRequest("Input values are invalid");
+            }
         }
     }
 }

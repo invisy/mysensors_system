@@ -46,11 +46,11 @@ class SignUp extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   
-  handleInputChange(event) {
+  async handleInputChange(event) {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    this.setState({
+    await this.setState({
       [name]: value
     });
   }
@@ -166,7 +166,7 @@ class SignUp extends Component {
     }
     catch(e)
     {
-      this.setState({
+      await this.setState({
         error: e
       });
     }

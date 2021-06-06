@@ -30,7 +30,7 @@ namespace MySensors.ApplicationCore.Services
 
         public async Task<IEnumerable<SensorOverviewDTO>> GetSensorsOverview(string userId)
         {
-            var spec = new SensorOverviewSpecification();
+            var spec = new SensorOverviewSpecification(userId);
             var sensors = await _sensorRepository.ListAsync(spec);
 
             var dtos = new List<SensorOverviewDTO>();
@@ -53,12 +53,12 @@ namespace MySensors.ApplicationCore.Services
                     var paramValueSpec = new SensorParamLastValueSpecification(param.Id);
                     SensorParameterValue paramValue = await _sensorParameterValuesRepository.FirstOrDefaultAsync(paramValueSpec);
 
-                    var asdsa = new SensorOverviewParameterDTO()
+                    var parameterDto= new SensorOverviewParameterDTO()
                     {
                         HumanReadableName = param.HumanReadableName,
                         Value = paramValue?.Value
                     };
-                    sensorOverviewParamsDTO.Add(asdsa);
+                    sensorOverviewParamsDTO.Add(parameterDto);
                 }
 
                 sensorOverviewDTO.SensorParameters = sensorOverviewParamsDTO;

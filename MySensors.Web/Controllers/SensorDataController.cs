@@ -19,6 +19,7 @@ using MySensors.Web.ViewModels;
 namespace MySensors.Web.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/[controller]")]
     public class SensorDataController : Controller
     {
@@ -30,6 +31,7 @@ namespace MySensors.Web.Controllers
         }
 
         [HttpGet("add")]
+        [AllowAnonymous]
         public async Task<IActionResult> AddValues(string token)
         {
             var queryDictionary = HttpContext.Request.Query.ToDictionary(_=> _.Key, _=> _.Value);
@@ -69,7 +71,6 @@ namespace MySensors.Web.Controllers
         }
         
         [HttpGet("{id}/{periodInSeconds}")]
-        [Authorize]
         public async Task<ActionResult<IEnumerable<SensorParameterValueWithDateDTO>>> GetValues(int id, int periodInSeconds)
         {
             try

@@ -189,14 +189,21 @@ class AddSensor extends Component {
 
   async addSensor(sensor) {
     try {
-      await SensorsService.addSensor(sensor);
-      this.props.history.push("/sensors")
+        var result = await SensorsService.addSensor(sensor);
+        if (result.status === 200) {
+            this.props.history.push("/sensors");
+        }
+        else {
+            await this.setState({
+                error: result.data
+            });
+        }
     }
-    catch(e)
+    catch
     {
-      /*this.setState({
-        error: e
-      });*/
+      this.setState({
+        error: "Unknown error..."
+      });
     }
     
   }

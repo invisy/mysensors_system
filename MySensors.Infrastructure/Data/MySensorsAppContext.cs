@@ -13,7 +13,6 @@ namespace MySensors.Infrastructure.Data
         
         public MySensorsAppContext(DbContextOptions<MySensorsAppContext> options) : base(options)
         {
-            Database.EnsureCreated();
         }
         
         protected override void OnModelCreating(ModelBuilder builder)

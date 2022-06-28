@@ -8,7 +8,6 @@ namespace MySensors.Infrastructure.Identity
         public AppIdentityDbContext(DbContextOptions<AppIdentityDbContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

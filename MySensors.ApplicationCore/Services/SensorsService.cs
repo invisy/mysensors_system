@@ -30,7 +30,7 @@ namespace MySensors.ApplicationCore.Services
 
         public async Task<IEnumerable<SensorOverviewDTO>> GetSensorsOverview(string userId)
         {
-            var spec = new SensorOverviewSpecification();
+            var spec = new SensorOverviewSpecification(userId);
             var sensors = await _sensorRepository.ListAsync(spec);
 
             var dtos = new List<SensorOverviewDTO>();

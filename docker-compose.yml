@@ -1,0 +1,11 @@
+﻿version: '3.4'
+services: 
+    mysensors-web:
+        build:
+            dockerfile: MySensors.Web/Dockerfile
+            context: .
+        environment:
+            ConnectionStrings__MySensorsDB:
+            ConnectionStrings__MySensorsIdentityDB:
+        ports:
+            - "80:80"

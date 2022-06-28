@@ -19,6 +19,7 @@ class SensorsService {
     }
 
     async addSensor(sensor) {
+        let result = { status: null, data: null };
         let auth = authHeader();
         const response = await fetch("/api/sensors/add", {
             method: 'POST',
@@ -29,12 +30,11 @@ class SensorsService {
             }
         });
 
-        if(response.ok)
-            return response.ok;
-        else if(response.status === 400 || response.status === 401)
-            throw await response.text()
-        else
-            throw "Unknown error";
+        result.status = response.status;
+        if (!response.ok)
+            result.data = await response.text();
+
+        return result;
     }
 
     async removeSensorById(id) {
@@ -50,9 +50,7 @@ class SensorsService {
 
         result.status = response.status;
         if(response.ok)
-            result.data = await response.text();
-        else
-            result.data = await response.text();
+        result.data = "";
 
         return result;
     }

@@ -1,11 +1,7 @@
 # "MySensors"
 
 ## Description:
-My pet project is called "MySensors". This project will be useful mostly for IoT engineers who want to track data from their sensors. It allows them to create sensor groups, collect data by sensors and represent it in a convenient way.
-
-## Test site is available here
-
-- http://mysensors.westeurope.cloudapp.azure.com/
+This project will be useful mostly for IoT engineers who want to track data from their sensors. It allows them to create sensor groups, collect data by sensors and represent it in a convenient way.
 
 ## Screenshots
 
